@@ -135,6 +135,8 @@ class DebuggerState:
 	def ip(self):
 		if self.bv.arch.name == 'x86_64':
 			return self.adapter.reg_read('rip')
+		elif self.bv.arch.name == 'x86':
+			return self.adapter.reg_read('eip')
 		else:
 			raise NotImplementedError('unimplemented architecture %s' % self.bv.arch.name)
 
@@ -150,6 +152,8 @@ class DebuggerState:
 	def stack_pointer(self):
 		if self.bv.arch.name == 'x86_64':
 			return self.adapter.reg_read('rsp')
+		elif self.bv.arch.name == 'x86':
+			return self.adapter.reg_read('esp')
 		else:
 			raise NotImplementedError('unimplemented architecture %s' % self.bv.arch.name)
 
@@ -216,7 +220,8 @@ class DebuggerState:
 				self.old_symbols.append(self.memory_view.get_symbol_by_raw_name("$stack_frame"))
 				self.old_dvs.add(reg_addrs['rsp'])
 		else:
-			raise NotImplementedError('only x86_64 so far')
+			pass
+			# raise NotImplementedError('only x86_64 so far')
 
 	def on_stdout(self, output):
 		# TODO: Send to debugger console when stdin is working
